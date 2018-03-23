@@ -10,7 +10,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "food1",
+    "_name": "coin1",
     "_objFlags": 0,
     "_parent": null,
     "_children": [],
@@ -32,8 +32,8 @@
     "_color": {
       "__type__": "cc.Color",
       "r": 255,
-      "g": 245,
-      "b": 3,
+      "g": 255,
+      "b": 255,
       "a": 255
     },
     "_cascadeOpacityEnabled": true,
@@ -44,13 +44,13 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 52,
-      "height": 44
+      "width": 45,
+      "height": 46
     },
     "_rotationX": 0,
     "_rotationY": 0,
-    "_scaleX": 1,
-    "_scaleY": 1,
+    "_scaleX": 0.7,
+    "_scaleY": 0.7,
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
@@ -72,7 +72,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "40fbc849-570d-43ab-8c71-3252a143bdf0"
+      "__uuid__": "d513295c-1c4c-4d12-8b39-cfe3e40cf4cd"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -90,7 +90,7 @@
     "_atlas": null
   },
   {
-    "__type__": "cb476ZCQ9JKoZgf1s/CLsr9",
+    "__type__": "b50b7aOwHZDLYEtOqfCoDlc",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -104,9 +104,9 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "d21da924-c0a9-494a-aec1-a95090aac023"
+      "__uuid__": "4d57c30f-0717-4bfb-bdc9-a127f6f53c2a"
     },
-    "fileId": "274nhpXjROeIO13CZEi1YC",
+    "fileId": "bbT2CM2e1JnL5An6GGL2Pn",
     "sync": false
   }
 ]

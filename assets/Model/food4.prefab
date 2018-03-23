@@ -31,9 +31,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 255,
+      "r": 0,
       "g": 255,
-      "b": 255,
+      "b": 0,
       "a": 255
     },
     "_cascadeOpacityEnabled": true,
@@ -44,8 +44,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 60,
-      "height": 40
+      "width": 47,
+      "height": 56
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -72,7 +72,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "12d25292-f704-475f-802c-b999d1749700"
+      "__uuid__": "6b8baa14-fb32-4f8d-a7d2-a1d9f88cf1e9"
     },
     "_type": 0,
     "_sizeMode": 1,

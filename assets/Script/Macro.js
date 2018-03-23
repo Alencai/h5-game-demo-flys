@@ -5,6 +5,7 @@ _Macro.script_player = "Player";
 _Macro.script_bullet = "Bullet";
 _Macro.script_enemy = "Enemy";
 _Macro.script_food = "Food";
+_Macro.script_coin = "Coin";
 
 
 _Macro.bullet_change_frame = 5;
@@ -13,6 +14,7 @@ _Macro.bullet_change_frame = 5;
 _Macro.tp_bullet_player = 100;
 _Macro.tp_bullet_food = 200;
 _Macro.tp_bullet_enemy = 300;
+_Macro.tp_coin = 401;
 
 
 _Macro.road_zhi_xian_yun_su = 1;

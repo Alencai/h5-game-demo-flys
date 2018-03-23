@@ -4,6 +4,7 @@ cc.Class({
 
     properties: {
         c_score: {default: null, type: cc.Label},
+        c_coin: {default: null, type: cc.Label},
         c_content: {default: null, type: cc.Node},
         c_player: {default: null, type: cc.Node},
         c_fail: {default: null, type: cc.Node},
@@ -17,6 +18,7 @@ cc.Class({
         c_prefabEnemy3: {default: null, type: cc.Prefab},
         c_prefabEnemy4: {default: null, type: cc.Prefab},
         c_prefabEnemy5: {default: null, type: cc.Prefab},
+        c_prefabCoin: {default: null, type: cc.Prefab},
         left: {
             get: function () { return this._left; },
         },
@@ -31,6 +33,7 @@ cc.Class({
     ctor: function() {
         this._pause = false;
         this._score = 0;
+        this._coin = 0;
         this._right = 0;
         this._left = 0;
         this._height = 0;
@@ -214,6 +217,7 @@ cc.Class({
         this._arrEnemy = [];
         this._arrBulletEnemy = [];
         this._arrBulletPlayer = [];
+        this._arrCoin = [];
         this._arrFood = [];
         this._Player = this.c_player.getComponent(Macro.script_player);
         if (this._Player) {
@@ -226,6 +230,7 @@ cc.Class({
         this._left = -this._right;
         this._height = this.node.height;
         this._score = 0;
+        this._coin = 0;
         this._pause = false;
     },
 
@@ -243,6 +248,7 @@ cc.Class({
         this._setFrame = 0;
         this._setTimes = 1;
         this._score = 0;
+        this._coin = 0;
         var arrBulletEnemy = this._arrBulletEnemy;
         for (var idx = 0; idx < arrBulletEnemy.length; ) {
             var enemy = arrBulletEnemy[idx];
@@ -257,9 +263,15 @@ cc.Class({
         }
         var arrBulletPlayer = this._arrBulletPlayer;
         for (var idxBullet = 0; idxBullet < arrBulletPlayer.length; ) {
-            var bullet = arrBulletPlayer[idx];
+            var bullet = arrBulletPlayer[idxBullet];
             bullet.die();
             arrBulletPlayer.splice(idxBullet, 1);
+        }
+        var arrCoin = this._arrCoin;
+        for (var idxCoin = 0; idxCoin < arrCoin.length; ) {
+            var coin = arrCoin[idxCoin];
+            coin.die();
+            arrCoin.splice(idxCoin, 1);
         }
         var arrFood = this._arrFood;
         for (var idxFood = 0; idxFood < arrFood.length; ) {
@@ -277,6 +289,7 @@ cc.Class({
             return;
         }
         this.c_score.string = this._score + "";
+        this.c_coin.string = this._coin + "";
         // 死亡结算
         var player = this._Player;
         if (!player || player.isHpEmpty()) {
@@ -329,6 +342,29 @@ cc.Class({
             enemy.move();
             ++ idx;
         }
+        // 金币
+        var arrCoin = this._arrCoin;
+        for (var idx = 0; idx < arrCoin.length; ) {
+            var coin = arrCoin[idx];
+            // 出界
+            var posY = coin.y;
+            if (posY < 0 || posY > this._height + this._height) {
+                coin.die();
+                arrCoin.splice(idx, 1);
+                continue;
+            } 
+            // 碰撞 我方飞机
+            if (player.isCollision(coin)) {
+                this._coin ++;
+                coin.die();
+                arrCoin.splice(idx, 1);
+                continue;
+            }
+            // 移动
+            coin.attach(player.x, player.y);
+            coin.move();
+            ++ idx;
+        }
         // 本方子弹
         var arrBulletPlayer = this._arrBulletPlayer;
         for (var idxBullet = 0; idxBullet < arrBulletPlayer.length; ) {
@@ -349,6 +385,7 @@ cc.Class({
                     enemy.hp = enemy.hp - bullet.attack;
                     if (enemy.isHpEmpty()) {
                         this.addFoods(enemy.x, enemy.y, enemy.powers);
+                        this.addCoins(enemy.x, enemy.y, enemy.attack * 2 + 1);
                         this._score += enemy.fullHP;
                         enemy.die();
                         arrEnemy.splice(idxEnemy, 1);
@@ -481,6 +518,13 @@ cc.Class({
         }
     },
 
+    addCoins: function(x, y, count) {
+        while(count > 0) {
+            -- count;
+            this.addCoinEach(x, y);
+        }
+    },
+
     addFoodEach: function(x, y) {
         if (this._pause) {
             return;
@@ -503,6 +547,32 @@ cc.Class({
         script.prepare();
         this.c_content.addChild(target);
         this._arrFood.push(script);
+    },
+
+    addCoinEach: function(x, y) {
+        if (this._pause) {
+            return;
+        }
+        var tp = Macro.tp_coin;
+        var target = this.getPoolNode(tp);
+        if (!target) {
+            return;
+        }
+        var script = target.getComponent(Macro.script_coin);
+        if (!script) {
+            return;
+        }
+        script.tp = tp;
+        script.x = x;
+        script.y = y;
+        script.speedX = this.getRandSpeed(0.15) * 3;
+        script.speedY = (this.getRandSpeed() + 0.51) * 4;
+        script.accX = 0;
+        script.accY = -0.3;
+        script.main = this;
+        script.prepare();
+        this.c_content.addChild(target);
+        this._arrCoin.push(script);
     },
 
     addBulletPlayer: function(attack, x, y, index) {
@@ -602,6 +672,7 @@ cc.Class({
             case 307: 
             case 308:
             case 309: prefab = this.c_prefabBullet; break;
+            case Macro.tp_coin: prefab = this.c_prefabCoin; break;
         }
         if (prefab) {
             node = cc.instantiate(prefab);
