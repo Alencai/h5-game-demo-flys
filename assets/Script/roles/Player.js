@@ -46,7 +46,7 @@ cc.Class({
     ctor: function () {
         this._hp = 1;
         this._attack = 1;
-        this._len = 30;
+        this._len = 25;
         this._posX = 0;
         this._posY = 0;
         this._bullets = 1;

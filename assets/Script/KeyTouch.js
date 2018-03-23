@@ -6,6 +6,10 @@ cc.Class({
         c_player: {default: null, type: cc.Node},
     },
 
+    ctor: function() {
+        this._pauseTime = 0;
+    },
+
     onLoad: function () {
         this._Player = this.c_player.getComponent(Macro.script_player);
         this.node.on(cc.Node.EventType.TOUCH_START, this.evtKeyTouchStart, this);
@@ -18,6 +22,10 @@ cc.Class({
     },
 
     update: function () {
+        ++ this._pauseTime;
+        if (this.pause()) {
+            return;
+        }
         var arrKeyCode = this._arrKeyCode;
         if (arrKeyCode.length > 0) {
             var code = arrKeyCode[arrKeyCode.length - 1];
@@ -28,7 +36,33 @@ cc.Class({
         }
     },
 
+    pause: function() {
+        if (this._pauseTime > 60) {
+            if (this._Player) {
+                var main = this._Player.main;
+                if (main) {
+                    main.pause();
+                }
+            }
+            return true;
+        }
+        return false;
+    },
+
+    resume: function() {
+        if (this._pauseTime > 60) {
+            if (this._Player) {
+                var main = this._Player.main;
+                if (main) {
+                    main.resume();
+                }
+            }
+        }
+        this._pauseTime = -600;
+    },
+
     evtKeyUp: function(evt) {
+        this.resume();
         var code = evt.keyCode;
         var arrKeyCode = this._arrKeyCode;
         for (var idx in arrKeyCode) {
@@ -40,6 +74,7 @@ cc.Class({
     },
 
     evtKeyDown: function(evt) {
+        this.resume();
         var code = evt.keyCode;
         var arrKeyCode = this._arrKeyCode;
         for (var idx in arrKeyCode) {
@@ -51,10 +86,12 @@ cc.Class({
     },
 
     evtKeyTouchStart: function(evt) {
+        this.resume();
         this._prePos = evt.getStartLocation();
     },
     
     evtKeyTouchMove: function(evt) {
+        this.resume();
         var endPos = evt.getLocation();
         if (this._prePos && this._Player) {
             this._Player.moveX(endPos.x - this._prePos.x);
@@ -63,7 +100,7 @@ cc.Class({
     },
 
     evtKeyTouchEnd: function(evt) {
-
+        this._pauseTime = 0;
     },
 
 });

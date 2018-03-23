@@ -29,6 +29,7 @@ cc.Class({
     },
 
     ctor: function() {
+        this._pause = false;
         this._score = 0;
         this._right = 0;
         this._left = 0;
@@ -225,9 +226,19 @@ cc.Class({
         this._left = -this._right;
         this._height = this.node.height;
         this._score = 0;
+        this._pause = false;
+    },
+
+    pause: function() {
+        this._pause = true;
+    },
+
+    resume: function() {
+        this._pause = false;
     },
 
     clear: function() {
+        this._pause = false;
         this._setIndex = 0;
         this._setFrame = 0;
         this._setTimes = 1;
@@ -262,10 +273,14 @@ cc.Class({
     },
 
     update: function (dt) {
+        if (this._pause) {
+            return;
+        }
         this.c_score.string = this._score + "";
         // 死亡结算
         var player = this._Player;
         if (!player || player.isHpEmpty()) {
+            this._pause = true;
             this.c_fail.active = true;
             return;
         }
@@ -410,8 +425,7 @@ cc.Class({
     },
 
     addEnemy: function(tp, road, attack, hp) {
-        var player = this._Player;
-        if (!player || player.isHpEmpty()) {
+        if (this._pause) {
             return;
         }
         var enemy = this.getPoolNode(tp);
@@ -468,8 +482,7 @@ cc.Class({
     },
 
     addFoodEach: function(x, y) {
-        var player = this._Player;
-        if (!player || player.isHpEmpty()) {
+        if (this._pause) {
             return;
         }
         var tp = Macro.tp_bullet_food + parseInt(4 * Math.random()) + 1;
@@ -518,8 +531,7 @@ cc.Class({
     },
 
     addBulletEach: function(tp, path, scale, x, y, index, speedY, offsetInv, arrList) {
-        var player = this._Player;
-        if (!player || player.isHpEmpty()) {
+        if (this._pause) {
             return;
         }
         var target = this.getPoolNode(tp);
