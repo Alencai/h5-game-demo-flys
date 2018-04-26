@@ -81,7 +81,7 @@ cc.Class({
             main.setPoolNode(this.node, Macro.tp_coin);
         }
         else {    
-            this.node.removeFromParent();
+            this.node.destroy();
         }
     },
 

@@ -67,7 +67,7 @@ cc.Class({
             main.setPoolNode(this.node, this._tp);
         }
         else {    
-            this.node.removeFromParent();
+            this.node.destroy();
         }
     },
 

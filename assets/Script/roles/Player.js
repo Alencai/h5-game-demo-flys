@@ -94,7 +94,7 @@ cc.Class({
     },
 
     die: function() {
-        this.node.removeFromParent();
+        this.node.destroy();
     },
 
     isCollision: function(target) {
